@@ -14,7 +14,13 @@
 # limitations under the License.
 import torch
 import torch.nn.functional as F
-from matcha.models.components.flow_matching import BASECFM
+
+# Try to import from matcha-tts, fall back to vendored version for Python 3.12+ compatibility
+try:
+    from matcha.models.components.flow_matching import BASECFM
+except (ImportError, ModuleNotFoundError):
+    from cosyvoice.flow.matcha_compat import BASECFM
+
 from cosyvoice.utils.common import set_all_random_seed
 
 

@@ -1,7 +1,7 @@
 [project]
 name = "comfyui_fl-cosyvoice3"
 description = "FL CosyVoice3 - Advanced Text-to-Speech nodes for ComfyUI. Features zero-shot voice cloning, cross-lingual synthesis, instruction-based control, and voice conversion using the CosyVoice3 model family. Supports 9 languages and 18+ Chinese dialects with automatic model downloading and caching."
-version = "1.0.2"
+version = "1.0.3"
 license = "Apache-2.0"
 dependencies = [
     "torch>=2.0.0",
@@ -25,7 +25,6 @@ dependencies = [
     "openai-whisper",
     "diffusers>=0.29.0",
     "WeTextProcessing",
-    "matcha-tts>=0.0.7",
     "pyarrow>=14.0.0",
     "pyworld>=0.3.0"
 ]
