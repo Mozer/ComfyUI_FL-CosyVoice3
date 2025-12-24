@@ -20,6 +20,9 @@ try:
 except (ImportError, ValueError):
     from utils.audio_utils import tensor_to_comfyui_audio, prepare_audio_for_cosyvoice, cleanup_temp_file
 
+# ComfyUI progress bar
+import comfy.utils
+
 
 class FL_CosyVoice3_CrossLingual:
     """
@@ -112,7 +115,11 @@ class FL_CosyVoice3_CrossLingual:
             cosyvoice_model = model["model"]
             sample_rate = cosyvoice_model.sample_rate  # Use actual model sample rate (24000 for v2/v3)
 
-            # Prepare reference audio
+            # Initialize progress bar - 3 steps: prepare, inference, finalize
+            pbar = comfy.utils.ProgressBar(3)
+
+            # Step 1: Prepare reference audio
+            pbar.update_absolute(0, 3)
             print(f"[FL CosyVoice3 CrossLingual] Preparing reference audio...")
             print(f"[FL CosyVoice3 CrossLingual] Model sample rate: {sample_rate} Hz")
 
@@ -163,9 +170,11 @@ class FL_CosyVoice3_CrossLingual:
                     formatted_text = text
                     print(f"[FL CosyVoice3 CrossLingual] Using CosyVoice v1 format (auto language detection)")
 
-            # Generate speech
+            pbar.update_absolute(1, 3)
+
+            # Step 2: Generate speech
+            pbar.update_absolute(1, 3)
             print(f"[FL CosyVoice3 CrossLingual] Running cross-lingual inference...")
-            print(f"[FL CosyVoice3 CrossLingual] DEBUG - tts_text: {formatted_text[:100]}...")
 
             output = cosyvoice_model.inference_cross_lingual(
                 tts_text=formatted_text,
@@ -174,26 +183,41 @@ class FL_CosyVoice3_CrossLingual:
                 speed=speed
             )
 
-            # Convert generator to list if needed
-            if hasattr(output, '__iter__') and not isinstance(output, dict):
-                output = list(output)[0]
+            # Collect all output chunks (for longer text that gets split)
+            all_speech = []
+            chunk_count = 0
+            for chunk in output:
+                chunk_count += 1
+                all_speech.append(chunk['tts_speech'])
+                print(f"[FL CosyVoice3 CrossLingual] Processed chunk {chunk_count}")
 
-            waveform = output['tts_speech']
+            # Concatenate all chunks
+            if len(all_speech) > 1:
+                waveform = torch.cat(all_speech, dim=-1)
+                print(f"[FL CosyVoice3 CrossLingual] Combined {len(all_speech)} chunks")
+            else:
+                waveform = all_speech[0]
+
+            pbar.update_absolute(2, 3)
 
             # Ensure waveform is on CPU
             if waveform.device != torch.device('cpu'):
                 waveform = waveform.cpu()
+
+            # Step 3: Finalize
+            pbar.update_absolute(2, 3)
 
             # Convert to ComfyUI AUDIO format
             audio = tensor_to_comfyui_audio(waveform, sample_rate)
 
             duration = waveform.shape[-1] / sample_rate
 
+            pbar.update_absolute(3, 3)
+
             print(f"\n{'='*60}")
             print(f"[FL CosyVoice3 CrossLingual] Cross-lingual speech generated successfully!")
             print(f"[FL CosyVoice3 CrossLingual] Duration: {duration:.2f} seconds")
             print(f"[FL CosyVoice3 CrossLingual] Sample rate: {sample_rate} Hz")
-            print(f"[FL CosyVoice3 CrossLingual] Shape: {waveform.shape}")
             print(f"{'='*60}\n")
 
             return (audio,)

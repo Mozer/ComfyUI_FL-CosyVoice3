@@ -20,6 +20,9 @@ try:
 except (ImportError, ValueError):
     from utils.audio_utils import tensor_to_comfyui_audio, prepare_audio_for_cosyvoice, cleanup_temp_file
 
+# ComfyUI progress bar
+import comfy.utils
+
 
 class FL_CosyVoice3_VoiceConversion:
     """
@@ -102,6 +105,12 @@ class FL_CosyVoice3_VoiceConversion:
             # Get model instance
             cosyvoice_model = model["model"]
             sample_rate = cosyvoice_model.sample_rate  # Use actual model sample rate (24000 for v2/v3)
+
+            # Initialize progress bar - 3 steps: prepare, inference, finalize
+            pbar = comfy.utils.ProgressBar(3)
+
+            # Step 1: Prepare audio
+            pbar.update_absolute(0, 3)
             print(f"[FL CosyVoice3 VC] Model sample rate: {sample_rate} Hz")
 
             # Check if model supports voice conversion
@@ -146,7 +155,10 @@ class FL_CosyVoice3_VoiceConversion:
             print(f"[FL CosyVoice3 VC] Preparing target audio ({target_duration:.1f}s)...")
             _, _, target_temp = prepare_audio_for_cosyvoice(target_audio, target_sample_rate=sample_rate)
 
-            # Perform voice conversion
+            pbar.update_absolute(1, 3)
+
+            # Step 2: Perform voice conversion
+            pbar.update_absolute(1, 3)
             print(f"[FL CosyVoice3 VC] Running voice conversion...")
 
             output = cosyvoice_model.inference_vc(
@@ -156,26 +168,41 @@ class FL_CosyVoice3_VoiceConversion:
                 speed=speed
             )
 
-            # Convert generator to list if needed
-            if hasattr(output, '__iter__') and not isinstance(output, dict):
-                output = list(output)[0]
+            # Collect all output chunks
+            all_speech = []
+            chunk_count = 0
+            for chunk in output:
+                chunk_count += 1
+                all_speech.append(chunk['tts_speech'])
+                print(f"[FL CosyVoice3 VC] Processed chunk {chunk_count}")
 
-            waveform = output['tts_speech']
+            # Concatenate all chunks
+            if len(all_speech) > 1:
+                waveform = torch.cat(all_speech, dim=-1)
+                print(f"[FL CosyVoice3 VC] Combined {len(all_speech)} chunks")
+            else:
+                waveform = all_speech[0]
+
+            pbar.update_absolute(2, 3)
 
             # Ensure waveform is on CPU
             if waveform.device != torch.device('cpu'):
                 waveform = waveform.cpu()
+
+            # Step 3: Finalize
+            pbar.update_absolute(2, 3)
 
             # Convert to ComfyUI AUDIO format
             audio = tensor_to_comfyui_audio(waveform, sample_rate)
 
             duration = waveform.shape[-1] / sample_rate
 
+            pbar.update_absolute(3, 3)
+
             print(f"\n{'='*60}")
             print(f"[FL CosyVoice3 VC] Voice conversion successful!")
             print(f"[FL CosyVoice3 VC] Duration: {duration:.2f} seconds")
             print(f"[FL CosyVoice3 VC] Sample rate: {sample_rate} Hz")
-            print(f"[FL CosyVoice3 VC] Shape: {waveform.shape}")
             print(f"{'='*60}\n")
 
             return (audio,)

@@ -20,6 +20,9 @@ try:
 except (ImportError, ValueError):
     from utils.audio_utils import tensor_to_comfyui_audio, save_raw_audio_to_tempfile, cleanup_temp_file
 
+# ComfyUI progress bar
+import comfy.utils
+
 # Import language detection utility
 import re
 _chinese_char_pattern = re.compile(r'[\u4e00-\u9fff]+')
@@ -100,11 +103,6 @@ class FL_CosyVoice3_ZeroShot:
                 "reference_audio": ("AUDIO", {
                     "description": "Reference voice to clone (max 30 seconds, recommended 3-10s)"
                 }),
-                "reference_text": ("STRING", {
-                    "default": "",
-                    "multiline": True,
-                    "description": "IMPORTANT: Exact transcript of what is spoken in the reference audio. Required for good results!"
-                }),
                 "speed": ("FLOAT", {
                     "default": 1.0,
                     "min": 0.5,
@@ -128,7 +126,6 @@ class FL_CosyVoice3_ZeroShot:
         model: Dict[str, Any],
         text: str,
         reference_audio: Dict[str, Any],
-        reference_text: str,
         speed: float = 1.0,
         seed: int = -1
     ) -> Tuple[Dict[str, Any]]:
@@ -139,7 +136,6 @@ class FL_CosyVoice3_ZeroShot:
             model: CosyVoice model info dict
             text: Text to synthesize
             reference_audio: Reference audio for voice cloning
-            reference_text: Transcript of reference audio
             speed: Speech speed
             seed: Random seed
 
@@ -149,7 +145,6 @@ class FL_CosyVoice3_ZeroShot:
         print(f"\n{'='*60}")
         print(f"[FL CosyVoice3 ZeroShot] Cloning voice...")
         print(f"[FL CosyVoice3 ZeroShot] Text: {text[:50]}{'...' if len(text) > 50 else ''}")
-        print(f"[FL CosyVoice3 ZeroShot] Reference text: {reference_text[:50] if reference_text else 'Not provided'}{'...' if len(reference_text) > 50 else ''}")
         print(f"[FL CosyVoice3 ZeroShot] Speed: {speed}x")
         print(f"{'='*60}\n")
 
@@ -190,49 +185,35 @@ class FL_CosyVoice3_ZeroShot:
 
             print(f"[FL CosyVoice3 ZeroShot] Reference audio duration: {ref_duration:.1f}s (max 30s)")
 
-            # DEBUG: Save detailed info about the incoming audio
-            print(f"[FL CosyVoice3 ZeroShot] DEBUG - Incoming audio waveform shape: {ref_waveform.shape}")
-            print(f"[FL CosyVoice3 ZeroShot] DEBUG - Incoming audio dtype: {ref_waveform.dtype}")
-            print(f"[FL CosyVoice3 ZeroShot] DEBUG - Incoming audio min/max: {ref_waveform.min():.4f} / {ref_waveform.max():.4f}")
-            print(f"[FL CosyVoice3 ZeroShot] DEBUG - Incoming audio sample_rate: {ref_sample_rate}")
-
             # Save audio directly WITHOUT preprocessing - CosyVoice's load_wav() handles mono/resampling
             temp_file = save_raw_audio_to_tempfile(reference_audio)
-            print(f"[FL CosyVoice3 ZeroShot] Saved raw audio to: {temp_file}")
-
-            # DEBUG: Re-load and check the saved temp file using soundfile (more compatible)
-            import soundfile as sf
-            debug_data, debug_sr = sf.read(temp_file)
-            print(f"[FL CosyVoice3 ZeroShot] DEBUG - Re-loaded temp file shape: {debug_data.shape}")
-            print(f"[FL CosyVoice3 ZeroShot] DEBUG - Re-loaded temp file sr: {debug_sr}")
-            print(f"[FL CosyVoice3 ZeroShot] DEBUG - Re-loaded temp file min/max: {debug_data.min():.4f} / {debug_data.max():.4f}")
-
-            # DEBUG: Save a copy of the temp file for analysis
-            import shutil
-            debug_copy_path = os.path.join(parent_dir, "debug_comfyui_input_audio.wav")
-            shutil.copy(temp_file, debug_copy_path)
-            print(f"[FL CosyVoice3 ZeroShot] DEBUG - Saved input audio copy to: {debug_copy_path}")
+            print(f"[FL CosyVoice3 ZeroShot] Saved reference audio to temp file")
 
             # Detect model version for proper formatting (use cached flag or detect from version string)
             is_v3 = model.get("is_cosyvoice3", False) or is_cosyvoice3_model(model)
 
-            # Determine transcript - use provided text or auto-transcribe
-            use_cross_lingual_fallback = False
-            if reference_text and reference_text.strip():
-                transcript = reference_text.strip()
-                print(f"[FL CosyVoice3 ZeroShot] Using provided reference text")
-            else:
-                # Auto-transcribe using Whisper
-                print(f"[FL CosyVoice3 ZeroShot] No reference text provided - auto-transcribing with Whisper...")
-                transcript = transcribe_audio(temp_file)
-                if transcript:
-                    print(f"[FL CosyVoice3 ZeroShot] Auto-transcribed: '{transcript[:100]}{'...' if len(transcript) > 100 else ''}'")
-                else:
-                    print(f"[FL CosyVoice3 ZeroShot] WARNING: Transcription failed or empty audio.")
-                    print(f"[FL CosyVoice3 ZeroShot] Falling back to cross-lingual mode (voice cloning without transcript)...")
-                    use_cross_lingual_fallback = True
+            # Initialize progress bar - 4 steps: transcribe, prepare, inference, finalize
+            pbar = comfy.utils.ProgressBar(4)
 
-            # Format prompt text based on model version
+            # Step 1: Auto-transcribe using Whisper
+            print(f"[FL CosyVoice3 ZeroShot] Auto-transcribing reference audio with Whisper...")
+            pbar.update_absolute(0, 4)
+
+            transcript = transcribe_audio(temp_file)
+            use_cross_lingual_fallback = False
+
+            if transcript:
+                print(f"[FL CosyVoice3 ZeroShot] Transcribed: '{transcript[:100]}{'...' if len(transcript) > 100 else ''}'")
+            else:
+                print(f"[FL CosyVoice3 ZeroShot] WARNING: Transcription failed or empty audio.")
+                print(f"[FL CosyVoice3 ZeroShot] Falling back to cross-lingual mode (voice cloning without transcript)...")
+                use_cross_lingual_fallback = True
+
+            pbar.update_absolute(1, 4)
+
+            # Step 2: Format prompt text based on model version
+            pbar.update_absolute(1, 4)
+
             if is_v3:
                 # CosyVoice3 format: system_prompt<|endofprompt|>transcript
                 if transcript and not use_cross_lingual_fallback:
@@ -243,7 +224,11 @@ class FL_CosyVoice3_ZeroShot:
                 # CosyVoice v1/v2 format: just the reference text, no system prompt
                 formatted_prompt_text = transcript if transcript else None
 
-            # Generate speech
+            pbar.update_absolute(2, 4)
+
+            # Step 3: Generate speech
+            pbar.update_absolute(2, 4)
+
             if use_cross_lingual_fallback or formatted_prompt_text is None:
                 # Use cross-lingual as fallback (extracts voice without needing transcript)
                 print(f"[FL CosyVoice3 ZeroShot] Using cross-lingual mode (no transcript required)...")
@@ -254,9 +239,6 @@ class FL_CosyVoice3_ZeroShot:
                 else:
                     formatted_tts_text = text
 
-                print(f"[FL CosyVoice3 ZeroShot] DEBUG - tts_text: {formatted_tts_text[:100]}...")
-                print(f"[FL CosyVoice3 ZeroShot] DEBUG - prompt_wav: {temp_file}")
-
                 output = cosyvoice_model.inference_cross_lingual(
                     tts_text=formatted_tts_text,
                     prompt_wav=temp_file,
@@ -266,9 +248,6 @@ class FL_CosyVoice3_ZeroShot:
             else:
                 # Use standard zero-shot with transcript
                 print(f"[FL CosyVoice3 ZeroShot] Running zero-shot inference...")
-                print(f"[FL CosyVoice3 ZeroShot] DEBUG - tts_text: {text[:100]}...")
-                print(f"[FL CosyVoice3 ZeroShot] DEBUG - prompt_text: {formatted_prompt_text[:100]}...")
-                print(f"[FL CosyVoice3 ZeroShot] DEBUG - prompt_wav: {temp_file}")
 
                 output = cosyvoice_model.inference_zero_shot(
                     tts_text=text,
@@ -278,31 +257,36 @@ class FL_CosyVoice3_ZeroShot:
                     speed=speed
                 )
 
-            # Convert generator to list if needed
-            if hasattr(output, '__iter__') and not isinstance(output, dict):
-                output = list(output)[0]
+            # Collect all output chunks (for longer text that gets split)
+            all_speech = []
+            chunk_count = 0
+            for chunk in output:
+                chunk_count += 1
+                all_speech.append(chunk['tts_speech'])
+                print(f"[FL CosyVoice3 ZeroShot] Processed chunk {chunk_count}")
 
-            waveform = output['tts_speech']
+            # Concatenate all chunks
+            if len(all_speech) > 1:
+                waveform = torch.cat(all_speech, dim=-1)
+                print(f"[FL CosyVoice3 ZeroShot] Combined {len(all_speech)} chunks")
+            else:
+                waveform = all_speech[0]
+
+            pbar.update_absolute(3, 4)
 
             # Ensure waveform is on CPU
             if waveform.device != torch.device('cpu'):
                 waveform = waveform.cpu()
 
-            # DEBUG: Save output audio before ComfyUI format conversion
-            debug_output_path = os.path.join(parent_dir, "debug_comfyui_output_audio.wav")
-            # Use soundfile for compatibility
-            output_np = waveform.numpy()
-            if output_np.ndim == 2:
-                output_np = output_np.T  # (channels, samples) -> (samples, channels)
-            sf.write(debug_output_path, output_np, sample_rate)
-            print(f"[FL CosyVoice3 ZeroShot] DEBUG - Saved output audio to: {debug_output_path}")
-            print(f"[FL CosyVoice3 ZeroShot] DEBUG - Output waveform shape: {waveform.shape}")
-            print(f"[FL CosyVoice3 ZeroShot] DEBUG - Output waveform min/max: {waveform.min():.4f} / {waveform.max():.4f}")
+            # Step 4: Finalize
+            pbar.update_absolute(3, 4)
 
             # Convert to ComfyUI AUDIO format
             audio = tensor_to_comfyui_audio(waveform, sample_rate)
 
             duration = waveform.shape[-1] / sample_rate
+
+            pbar.update_absolute(4, 4)
 
             print(f"\n{'='*60}")
             print(f"[FL CosyVoice3 ZeroShot] Voice cloned successfully!")
