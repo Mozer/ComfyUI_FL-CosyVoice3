@@ -148,6 +148,20 @@ class FL_CosyVoice3_ZeroShot:
         print(f"[FL CosyVoice3 ZeroShot] Speed: {speed}x")
         print(f"{'='*60}\n")
 
+        # Check audio duration BEFORE try block so error propagates to ComfyUI
+        ref_waveform = reference_audio['waveform']
+        ref_sample_rate = reference_audio['sample_rate']
+        ref_duration = ref_waveform.shape[-1] / ref_sample_rate
+
+        if ref_duration > 30:
+            error_msg = (
+                f"Reference audio is too long ({ref_duration:.1f} seconds). "
+                f"CosyVoice only supports reference audio up to 30 seconds for voice cloning. "
+                f"Please use the FL Audio Crop node to trim your audio to 30 seconds or less. "
+                f"Recommended: 3-10 seconds for best quality."
+            )
+            raise ValueError(error_msg)
+
         temp_file = None
 
         try:
@@ -165,24 +179,6 @@ class FL_CosyVoice3_ZeroShot:
             # Prepare reference audio
             print(f"[FL CosyVoice3 ZeroShot] Preparing reference audio...")
             print(f"[FL CosyVoice3 ZeroShot] Model sample rate: {sample_rate} Hz")
-
-            # Check audio duration - CosyVoice only supports up to 30 seconds for voice cloning
-            ref_waveform = reference_audio['waveform']
-            ref_sample_rate = reference_audio['sample_rate']
-            ref_duration = ref_waveform.shape[-1] / ref_sample_rate
-
-            if ref_duration > 30:
-                error_msg = (
-                    f"Reference audio is too long ({ref_duration:.1f} seconds). "
-                    f"CosyVoice only supports reference audio up to 30 seconds for voice cloning. "
-                    f"Please use the FL Audio Crop node to trim your audio to 30 seconds or less. "
-                    f"Recommended: 3-10 seconds for best quality."
-                )
-                print(f"\n{'='*60}")
-                print(f"[FL CosyVoice3 ZeroShot] ERROR: {error_msg}")
-                print(f"{'='*60}\n")
-                raise ValueError(error_msg)
-
             print(f"[FL CosyVoice3 ZeroShot] Reference audio duration: {ref_duration:.1f}s (max 30s)")
 
             # Save audio directly WITHOUT preprocessing - CosyVoice's load_wav() handles mono/resampling

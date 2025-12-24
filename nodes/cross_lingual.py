@@ -101,6 +101,20 @@ class FL_CosyVoice3_CrossLingual:
         print(f"[FL CosyVoice3 CrossLingual] Speed: {speed}x")
         print(f"{'='*60}\n")
 
+        # Check audio duration BEFORE try block so error propagates to ComfyUI
+        ref_waveform = reference_audio['waveform']
+        ref_sample_rate = reference_audio['sample_rate']
+        ref_duration = ref_waveform.shape[-1] / ref_sample_rate
+
+        if ref_duration > 30:
+            error_msg = (
+                f"Reference audio is too long ({ref_duration:.1f} seconds). "
+                f"CosyVoice only supports reference audio up to 30 seconds. "
+                f"Please use the FL Audio Crop node to trim your audio to 30 seconds or less. "
+                f"Recommended: 3-10 seconds for best quality."
+            )
+            raise ValueError(error_msg)
+
         temp_file = None
 
         try:
@@ -122,24 +136,6 @@ class FL_CosyVoice3_CrossLingual:
             pbar.update_absolute(0, 3)
             print(f"[FL CosyVoice3 CrossLingual] Preparing reference audio...")
             print(f"[FL CosyVoice3 CrossLingual] Model sample rate: {sample_rate} Hz")
-
-            # Check audio duration - CosyVoice only supports up to 30 seconds for voice cloning
-            ref_waveform = reference_audio['waveform']
-            ref_sample_rate = reference_audio['sample_rate']
-            ref_duration = ref_waveform.shape[-1] / ref_sample_rate
-
-            if ref_duration > 30:
-                error_msg = (
-                    f"Reference audio is too long ({ref_duration:.1f} seconds). "
-                    f"CosyVoice only supports reference audio up to 30 seconds. "
-                    f"Please use the FL Audio Crop node to trim your audio to 30 seconds or less. "
-                    f"Recommended: 3-10 seconds for best quality."
-                )
-                print(f"\n{'='*60}")
-                print(f"[FL CosyVoice3 CrossLingual] ERROR: {error_msg}")
-                print(f"{'='*60}\n")
-                raise ValueError(error_msg)
-
             print(f"[FL CosyVoice3 CrossLingual] Reference audio duration: {ref_duration:.1f}s (max 30s)")
             # Save at original sample rate - CosyVoice's load_wav() handles resampling internally
             _, _, temp_file = prepare_audio_for_cosyvoice(reference_audio, target_sample_rate=ref_sample_rate)

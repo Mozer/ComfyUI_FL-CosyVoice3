@@ -91,6 +91,31 @@ class FL_CosyVoice3_VoiceConversion:
         print(f"[FL CosyVoice3 VC] Speed: {speed}x")
         print(f"{'='*60}\n")
 
+        # Check audio durations BEFORE try block so errors propagate to ComfyUI
+        source_waveform = source_audio['waveform']
+        source_sample_rate = source_audio['sample_rate']
+        source_duration = source_waveform.shape[-1] / source_sample_rate
+
+        target_waveform = target_audio['waveform']
+        target_sample_rate = target_audio['sample_rate']
+        target_duration = target_waveform.shape[-1] / target_sample_rate
+
+        if source_duration > 30:
+            error_msg = (
+                f"Source audio is too long ({source_duration:.1f} seconds). "
+                f"CosyVoice only supports audio up to 30 seconds. "
+                f"Please use the FL Audio Crop node to trim your audio."
+            )
+            raise ValueError(error_msg)
+
+        if target_duration > 30:
+            error_msg = (
+                f"Target audio is too long ({target_duration:.1f} seconds). "
+                f"CosyVoice only supports audio up to 30 seconds. "
+                f"Please use the FL Audio Crop node to trim your audio."
+            )
+            raise ValueError(error_msg)
+
         source_temp = None
         target_temp = None
 
@@ -116,37 +141,6 @@ class FL_CosyVoice3_VoiceConversion:
             # Check if model supports voice conversion
             if not hasattr(cosyvoice_model, 'inference_vc'):
                 raise RuntimeError("Model does not support voice conversion")
-
-            # Check audio durations - CosyVoice only supports up to 30 seconds
-            source_waveform = source_audio['waveform']
-            source_sample_rate = source_audio['sample_rate']
-            source_duration = source_waveform.shape[-1] / source_sample_rate
-
-            target_waveform = target_audio['waveform']
-            target_sample_rate = target_audio['sample_rate']
-            target_duration = target_waveform.shape[-1] / target_sample_rate
-
-            if source_duration > 30:
-                error_msg = (
-                    f"Source audio is too long ({source_duration:.1f} seconds). "
-                    f"CosyVoice only supports audio up to 30 seconds. "
-                    f"Please use the FL Audio Crop node to trim your audio."
-                )
-                print(f"\n{'='*60}")
-                print(f"[FL CosyVoice3 VC] ERROR: {error_msg}")
-                print(f"{'='*60}\n")
-                raise ValueError(error_msg)
-
-            if target_duration > 30:
-                error_msg = (
-                    f"Target audio is too long ({target_duration:.1f} seconds). "
-                    f"CosyVoice only supports audio up to 30 seconds. "
-                    f"Please use the FL Audio Crop node to trim your audio."
-                )
-                print(f"\n{'='*60}")
-                print(f"[FL CosyVoice3 VC] ERROR: {error_msg}")
-                print(f"{'='*60}\n")
-                raise ValueError(error_msg)
 
             # Prepare source and target audio - use model's sample rate
             print(f"[FL CosyVoice3 VC] Preparing source audio ({source_duration:.1f}s)...")
