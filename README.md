@@ -24,6 +24,7 @@ Advanced text-to-speech nodes for ComfyUI powered by the CosyVoice3 model family
 | **Zero-Shot Clone** | Clone voices from reference audio |
 | **Cross-Lingual** | Generate speech in different languages |
 | **Voice Conversion** | Convert source audio to target voice |
+| **Dialog** | Multi-speaker dialog synthesis with up to 4 voices |
 | **Audio Crop** | Trim audio to specific time ranges |
 
 ## Installation
