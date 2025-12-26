@@ -61,7 +61,7 @@ Models download automatically on first use to `ComfyUI/models/cosyvoice/`.
 
 - Python 3.10+
 - 8GB RAM minimum (16GB+ recommended)
-- NVIDIA GPU with 8GB+ VRAM recommended (CPU supported)
+- NVIDIA GPU with 8GB+ VRAM recommended (CPU and Mac MPS supported)
 
 ## License
 
