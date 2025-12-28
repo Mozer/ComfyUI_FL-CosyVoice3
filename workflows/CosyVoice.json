@@ -1,9 +1,43 @@
 {
   "id": "e0f2419f-4ce0-47e6-a916-3c732c5455b8",
   "revision": 0,
-  "last_node_id": 54,
-  "last_link_id": 119,
+  "last_node_id": 62,
+  "last_link_id": 128,
   "nodes": [
+    {
+      "id": 54,
+      "type": "PreviewAudio",
+      "pos": [
+        1324.1439547819318,
+        -537.1834217246296
+      ],
+      "size": [
+        412.80668047264953,
+        173.65495882256306
+      ],
+      "flags": {},
+      "order": 13,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "audio",
+          "type": "AUDIO",
+          "link": 119
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "PreviewAudio",
+        "cnr_id": "comfy-core",
+        "ver": "0.5.1",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "version": "7.2.2",
+          "input_ue_unconnectable": {}
+        }
+      },
+      "widgets_values": []
+    },
     {
       "id": 23,
       "type": "LoadAudio",
@@ -17,7 +51,7 @@
       ],
       "flags": {},
       "order": 0,
-      "mode": 0,
+      "mode": 4,
       "inputs": [],
       "outputs": [
         {
@@ -29,9 +63,9 @@
         }
       ],
       "properties": {
+        "Node name for S&R": "LoadAudio",
         "cnr_id": "comfy-core",
         "ver": "0.5.1",
-        "Node name for S&R": "LoadAudio",
         "ue_properties": {
           "widget_ue_connectable": {},
           "version": "7.2.2",
@@ -45,493 +79,6 @@
       ]
     },
     {
-      "id": 13,
-      "type": "LoadAudio",
-      "pos": [
-        -111.93472822025876,
-        182.02918202464969
-      ],
-      "size": [
-        282.798828125,
-        136
-      ],
-      "flags": {},
-      "order": 1,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "AUDIO",
-          "type": "AUDIO",
-          "links": [
-            100
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.5.1",
-        "Node name for S&R": "LoadAudio",
-        "ue_properties": {
-          "widget_ue_connectable": {},
-          "version": "7.2.2",
-          "input_ue_unconnectable": {}
-        }
-      },
-      "widgets_values": [
-        "SCD_VO_BarbKing_01.wav",
-        null,
-        null
-      ]
-    },
-    {
-      "id": 29,
-      "type": "PreviewAudio",
-      "pos": [
-        1311.1748212059724,
-        167.16216396120555
-      ],
-      "size": [
-        412.80668047264953,
-        173.65495882256306
-      ],
-      "flags": {},
-      "order": 10,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "audio",
-          "type": "AUDIO",
-          "link": 112
-        }
-      ],
-      "outputs": [],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.5.1",
-        "Node name for S&R": "PreviewAudio",
-        "ue_properties": {
-          "widget_ue_connectable": {},
-          "version": "7.2.2",
-          "input_ue_unconnectable": {}
-        }
-      },
-      "widgets_values": []
-    },
-    {
-      "id": 25,
-      "type": "PreviewAudio",
-      "pos": [
-        1314.3040256530005,
-        -210.07999975362685
-      ],
-      "size": [
-        412.80668047264953,
-        173.65495882256306
-      ],
-      "flags": {},
-      "order": 9,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "audio",
-          "type": "AUDIO",
-          "link": 109
-        }
-      ],
-      "outputs": [],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.5.1",
-        "Node name for S&R": "PreviewAudio",
-        "ue_properties": {
-          "widget_ue_connectable": {},
-          "version": "7.2.2",
-          "input_ue_unconnectable": {}
-        }
-      },
-      "widgets_values": []
-    },
-    {
-      "id": 21,
-      "type": "PreviewAudio",
-      "pos": [
-        1305.478469816722,
-        558.163576509381
-      ],
-      "size": [
-        493.0338597032369,
-        187.0496886669019
-      ],
-      "flags": {},
-      "order": 11,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "audio",
-          "type": "AUDIO",
-          "link": 115
-        }
-      ],
-      "outputs": [],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.5.1",
-        "Node name for S&R": "PreviewAudio",
-        "ue_properties": {
-          "widget_ue_connectable": {},
-          "version": "7.2.2",
-          "input_ue_unconnectable": {}
-        }
-      },
-      "widgets_values": []
-    },
-    {
-      "id": 48,
-      "type": "FL_CosyVoice3_AudioCrop",
-      "pos": [
-        207.08402563262774,
-        184.6241368676066
-      ],
-      "size": [
-        270,
-        82
-      ],
-      "flags": {},
-      "order": 4,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "audio",
-          "type": "AUDIO",
-          "link": 100
-        }
-      ],
-      "outputs": [
-        {
-          "name": "audio",
-          "type": "AUDIO",
-          "links": [
-            108,
-            111,
-            114,
-            118
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "comfyui_fl-cosyvoice3",
-        "ver": "1e14342836f1c16981974de1ffbcc40c945f6644",
-        "Node name for S&R": "FL_CosyVoice3_AudioCrop",
-        "ue_properties": {
-          "widget_ue_connectable": {},
-          "input_ue_unconnectable": {},
-          "version": "7.2.2"
-        }
-      },
-      "widgets_values": [
-        "0:00",
-        "0:10"
-      ],
-      "color": "#16727c",
-      "bgcolor": "#4F0074"
-    },
-    {
-      "id": 50,
-      "type": "FL_CosyVoice3_VoiceConversion",
-      "pos": [
-        886.7255684140447,
-        -210.76754122210997
-      ],
-      "size": [
-        306.8990234375,
-        146
-      ],
-      "flags": {},
-      "order": 5,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "model",
-          "type": "COSYVOICE_MODEL",
-          "link": 106
-        },
-        {
-          "name": "source_audio",
-          "type": "AUDIO",
-          "link": 107
-        },
-        {
-          "name": "target_audio",
-          "type": "AUDIO",
-          "link": 108
-        }
-      ],
-      "outputs": [
-        {
-          "name": "audio",
-          "type": "AUDIO",
-          "links": [
-            109
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "comfyui_fl-cosyvoice3",
-        "ver": "f3e0f04aae70fd1c296240f481120412002233b0",
-        "Node name for S&R": "FL_CosyVoice3_VoiceConversion",
-        "ue_properties": {
-          "widget_ue_connectable": {},
-          "input_ue_unconnectable": {},
-          "version": "7.2.2"
-        }
-      },
-      "widgets_values": [
-        1,
-        42,
-        "randomize"
-      ],
-      "color": "#16727c",
-      "bgcolor": "#4F0074"
-    },
-    {
-      "id": 51,
-      "type": "FL_CosyVoice3_CrossLingual",
-      "pos": [
-        810.4004584118869,
-        169.16318828173556
-      ],
-      "size": [
-        400,
-        204
-      ],
-      "flags": {},
-      "order": 6,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "model",
-          "type": "COSYVOICE_MODEL",
-          "link": 110
-        },
-        {
-          "name": "reference_audio",
-          "type": "AUDIO",
-          "link": 111
-        }
-      ],
-      "outputs": [
-        {
-          "name": "audio",
-          "type": "AUDIO",
-          "links": [
-            112
-          ]
-        }
-      ],
-      "properties": {
-        "ue_properties": {
-          "widget_ue_connectable": {},
-          "input_ue_unconnectable": {}
-        },
-        "cnr_id": "comfyui_fl-cosyvoice3",
-        "ver": "f3e0f04aae70fd1c296240f481120412002233b0",
-        "Node name for S&R": "FL_CosyVoice3_CrossLingual"
-      },
-      "widgets_values": [
-        "Mi mujer Isabel es la mejor novia que un hombre puede pedir.",
-        1,
-        "auto",
-        42,
-        "randomize"
-      ],
-      "color": "#16727c",
-      "bgcolor": "#4F0074"
-    },
-    {
-      "id": 52,
-      "type": "FL_CosyVoice3_ZeroShot",
-      "pos": [
-        786.6580835135699,
-        559.0826156309688
-      ],
-      "size": [
-        400,
-        200
-      ],
-      "flags": {},
-      "order": 7,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "model",
-          "type": "COSYVOICE_MODEL",
-          "link": 113
-        },
-        {
-          "name": "reference_audio",
-          "type": "AUDIO",
-          "link": 114
-        }
-      ],
-      "outputs": [
-        {
-          "name": "audio",
-          "type": "AUDIO",
-          "links": [
-            115
-          ]
-        }
-      ],
-      "properties": {
-        "ue_properties": {
-          "widget_ue_connectable": {},
-          "input_ue_unconnectable": {}
-        },
-        "cnr_id": "comfyui_fl-cosyvoice3",
-        "ver": "f3e0f04aae70fd1c296240f481120412002233b0",
-        "Node name for S&R": "FL_CosyVoice3_ZeroShot"
-      },
-      "widgets_values": [
-        "Hello, this is my cloned voice speaking.",
-        1,
-        42,
-        "randomize"
-      ],
-      "color": "#16727c",
-      "bgcolor": "#4F0074"
-    },
-    {
-      "id": 41,
-      "type": "FL_CosyVoice3_ModelLoader",
-      "pos": [
-        144.33628536735083,
-        559.0932582302397
-      ],
-      "size": [
-        341.14200994318173,
-        154
-      ],
-      "flags": {},
-      "order": 2,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "model",
-          "type": "COSYVOICE_MODEL",
-          "links": [
-            106,
-            110,
-            113,
-            116
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "comfyui_fl-cosyvoice3",
-        "ver": "f5d67b6299621ec85c13f8f657c283b45ca8a79f",
-        "Node name for S&R": "FL_CosyVoice3_ModelLoader",
-        "aux_id": "filliptm/ComfyUI_FL-CosyVoice3",
-        "ue_properties": {
-          "widget_ue_connectable": {},
-          "version": "7.2.2",
-          "input_ue_unconnectable": {}
-        }
-      },
-      "widgets_values": [
-        "Fun-CosyVoice3-0.5B",
-        "HuggingFace",
-        "auto",
-        false,
-        false
-      ],
-      "color": "#16727c",
-      "bgcolor": "#4F0074"
-    },
-    {
-      "id": 49,
-      "type": "FL_CosyVoice3_AudioCrop",
-      "pos": [
-        206.28911425119156,
-        -66.21489804387407
-      ],
-      "size": [
-        270,
-        82
-      ],
-      "flags": {},
-      "order": 3,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "audio",
-          "type": "AUDIO",
-          "link": 104
-        }
-      ],
-      "outputs": [
-        {
-          "name": "audio",
-          "type": "AUDIO",
-          "links": [
-            107,
-            117
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "comfyui_fl-cosyvoice3",
-        "ver": "f3e0f04aae70fd1c296240f481120412002233b0",
-        "Node name for S&R": "FL_CosyVoice3_AudioCrop",
-        "ue_properties": {
-          "widget_ue_connectable": {},
-          "input_ue_unconnectable": {},
-          "version": "7.2.2"
-        }
-      },
-      "widgets_values": [
-        "0:00",
-        "0:10"
-      ],
-      "color": "#16727c",
-      "bgcolor": "#4F0074"
-    },
-    {
-      "id": 54,
-      "type": "PreviewAudio",
-      "pos": [
-        1324.1439547819318,
-        -537.1834217246296
-      ],
-      "size": [
-        412.80668047264953,
-        173.65495882256306
-      ],
-      "flags": {},
-      "order": 12,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "audio",
-          "type": "AUDIO",
-          "link": 119
-        }
-      ],
-      "outputs": [],
-      "properties": {
-        "ue_properties": {
-          "widget_ue_connectable": {},
-          "version": "7.2.2",
-          "input_ue_unconnectable": {}
-        },
-        "cnr_id": "comfy-core",
-        "ver": "0.5.1",
-        "Node name for S&R": "PreviewAudio"
-      },
-      "widgets_values": []
-    },
-    {
       "id": 53,
       "type": "FL_CosyVoice3_Dialog",
       "pos": [
@@ -543,8 +90,8 @@
         260
       ],
       "flags": {},
-      "order": 8,
-      "mode": 0,
+      "order": 9,
+      "mode": 4,
       "inputs": [
         {
           "name": "model",
@@ -609,22 +156,493 @@
         }
       ],
       "properties": {
+        "Node name for S&R": "FL_CosyVoice3_Dialog",
+        "cnr_id": "comfyui_fl-cosyvoice3",
+        "ver": "f3e0f04aae70fd1c296240f481120412002233b0",
         "ue_properties": {
           "widget_ue_connectable": {},
           "input_ue_unconnectable": {}
-        },
-        "cnr_id": "comfyui_fl-cosyvoice3",
-        "ver": "f3e0f04aae70fd1c296240f481120412002233b0",
-        "Node name for S&R": "FL_CosyVoice3_Dialog"
+        }
       },
       "widgets_values": [
         "SPEAKER A: Hello, how are you?\nSPEAKER B: I'm doing great, thanks for asking!",
         1,
-        42,
+        1239593781,
         "randomize"
       ],
       "color": "#16727c",
       "bgcolor": "#4F0074"
+    },
+    {
+      "id": 48,
+      "type": "FL_CosyVoice3_AudioCrop",
+      "pos": [
+        216.9394584216281,
+        209.26274590892834
+      ],
+      "size": [
+        270,
+        82
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "audio",
+          "type": "AUDIO",
+          "link": 100
+        }
+      ],
+      "outputs": [
+        {
+          "name": "audio",
+          "type": "AUDIO",
+          "links": [
+            108,
+            111,
+            114,
+            118
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "FL_CosyVoice3_AudioCrop",
+        "cnr_id": "comfyui_fl-cosyvoice3",
+        "ver": "1e14342836f1c16981974de1ffbcc40c945f6644",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.2.2"
+        }
+      },
+      "widgets_values": [
+        "0:00",
+        "0:10"
+      ],
+      "color": "#16727c",
+      "bgcolor": "#4F0074"
+    },
+    {
+      "id": 60,
+      "type": "PreviewAudio",
+      "pos": [
+        1214.8897301768304,
+        575.421301459939
+      ],
+      "size": [
+        270,
+        88
+      ],
+      "flags": {},
+      "order": 12,
+      "mode": 4,
+      "inputs": [
+        {
+          "name": "audio",
+          "type": "AUDIO",
+          "link": 127
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "PreviewAudio"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 41,
+      "type": "FL_CosyVoice3_ModelLoader",
+      "pos": [
+        200.38427575279744,
+        531.6655363732145
+      ],
+      "size": [
+        304.17417674116757,
+        157.57750900109795
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "model",
+          "type": "COSYVOICE_MODEL",
+          "links": [
+            106,
+            110,
+            113,
+            116
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "FL_CosyVoice3_ModelLoader",
+        "cnr_id": "comfyui_fl-cosyvoice3",
+        "aux_id": "filliptm/ComfyUI_FL-CosyVoice3",
+        "ver": "f5d67b6299621ec85c13f8f657c283b45ca8a79f",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "version": "7.2.2",
+          "input_ue_unconnectable": {}
+        }
+      },
+      "widgets_values": [
+        "Fun-CosyVoice3-0.5B",
+        "HuggingFace",
+        "auto",
+        false,
+        false
+      ],
+      "color": "#16727c",
+      "bgcolor": "#4F0074"
+    },
+    {
+      "id": 49,
+      "type": "FL_CosyVoice3_AudioCrop",
+      "pos": [
+        206.28911425119156,
+        -66.21489804387407
+      ],
+      "size": [
+        270,
+        82
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 4,
+      "inputs": [
+        {
+          "name": "audio",
+          "type": "AUDIO",
+          "link": 104
+        }
+      ],
+      "outputs": [
+        {
+          "name": "audio",
+          "type": "AUDIO",
+          "links": [
+            107,
+            117
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "FL_CosyVoice3_AudioCrop",
+        "cnr_id": "comfyui_fl-cosyvoice3",
+        "ver": "f3e0f04aae70fd1c296240f481120412002233b0",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.2.2"
+        }
+      },
+      "widgets_values": [
+        "0:00",
+        "0:10"
+      ],
+      "color": "#16727c",
+      "bgcolor": "#4F0074"
+    },
+    {
+      "id": 50,
+      "type": "FL_CosyVoice3_VoiceConversion",
+      "pos": [
+        855.243273032781,
+        -226.50868891274186
+      ],
+      "size": [
+        306.8990234375,
+        146
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 4,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "COSYVOICE_MODEL",
+          "link": 106
+        },
+        {
+          "name": "source_audio",
+          "type": "AUDIO",
+          "link": 107
+        },
+        {
+          "name": "target_audio",
+          "type": "AUDIO",
+          "link": 108
+        }
+      ],
+      "outputs": [
+        {
+          "name": "audio",
+          "type": "AUDIO",
+          "links": [
+            109
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "FL_CosyVoice3_VoiceConversion",
+        "cnr_id": "comfyui_fl-cosyvoice3",
+        "ver": "f3e0f04aae70fd1c296240f481120412002233b0",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {},
+          "version": "7.2.2"
+        }
+      },
+      "widgets_values": [
+        1,
+        1650330396,
+        "randomize"
+      ],
+      "color": "#16727c",
+      "bgcolor": "#4F0074"
+    },
+    {
+      "id": 25,
+      "type": "PreviewAudio",
+      "pos": [
+        1314.3040256530005,
+        -210.07999975362685
+      ],
+      "size": [
+        412.80668047264953,
+        173.65495882256306
+      ],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "audio",
+          "type": "AUDIO",
+          "link": 109
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "PreviewAudio",
+        "cnr_id": "comfy-core",
+        "ver": "0.5.1",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "version": "7.2.2",
+          "input_ue_unconnectable": {}
+        }
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 52,
+      "type": "FL_CosyVoice3_ZeroShot",
+      "pos": [
+        841.3932780867038,
+        490.2451927061073
+      ],
+      "size": [
+        328.914788992187,
+        212.79402466259944
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 4,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "COSYVOICE_MODEL",
+          "link": 113
+        },
+        {
+          "name": "reference_audio",
+          "type": "AUDIO",
+          "link": 114
+        }
+      ],
+      "outputs": [
+        {
+          "name": "audio",
+          "type": "AUDIO",
+          "links": [
+            127
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "FL_CosyVoice3_ZeroShot",
+        "cnr_id": "comfyui_fl-cosyvoice3",
+        "ver": "f3e0f04aae70fd1c296240f481120412002233b0",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {}
+        }
+      },
+      "widgets_values": [
+        "О, черт! Привет. мне нужно с тобой поговорить. ха-ха.",
+        1,
+        1,
+        "fixed"
+      ],
+      "color": "#16727c",
+      "bgcolor": "#4F0074"
+    },
+    {
+      "id": 13,
+      "type": "LoadAudio",
+      "pos": [
+        -111.93472822025876,
+        182.02918202464969
+      ],
+      "size": [
+        282.798828125,
+        136
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "AUDIO",
+          "type": "AUDIO",
+          "links": [
+            100
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadAudio",
+        "cnr_id": "comfy-core",
+        "ver": "0.5.1",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "version": "7.2.2",
+          "input_ue_unconnectable": {}
+        }
+      },
+      "widgets_values": [
+        "me.wav",
+        null,
+        null
+      ]
+    },
+    {
+      "id": 56,
+      "type": "Note",
+      "pos": [
+        1554.98121835776,
+        92.16067028971916
+      ],
+      "size": [
+        495.4293579525968,
+        258.37164118619353
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "instruct emotions",
+      "properties": {},
+      "widgets_values": [
+        "Please say a sentence as loudly as possible.\nPlease say a sentence in a very soft voice.\nPlease say a sentence in a very frightened voice.\nPlease say this sentence in a very happy and excited tone.\nPlease say this sentence in a sad and melancholic tone.\nPlease say this sentence in an angry and frustrated tone.\nPlease pronounce the letter R with a uvular trill, like a French R or a speech impediment where R sounds guttural.\nPlease speak with a lisp, pronouncing S and Z sounds as TH.\nPlease skip or omit the letter R completely when speaking.\n\n请用尽可能慢地语速说一句话。 - Please say a word as slowly as possible.\n请用尽可能快地语速说一句话。 - Please say a word as quickly as possible.\n请非常开心地说一句话。 - Please say a word very happily.\n请非常伤心地说一句话。 - Please say a word very sadly.\n请非常生气地说一句话。 - Please say a word very angrily.\n我想体验一下小猪佩奇风格,可以吗?- I want to experience the Peppa Pig style, can I?\n你可以尝试用机器人的方式解答吗? - Can you try to answer in a robotic way?"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 51,
+      "type": "FL_CosyVoice3_CrossLingual",
+      "pos": [
+        835.8055533253059,
+        120.01174690822202
+      ],
+      "size": [
+        353.6793467888874,
+        258
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "COSYVOICE_MODEL",
+          "link": 110
+        },
+        {
+          "name": "reference_audio",
+          "type": "AUDIO",
+          "link": 111
+        }
+      ],
+      "outputs": [
+        {
+          "name": "audio",
+          "type": "AUDIO",
+          "links": [
+            112
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "FL_CosyVoice3_CrossLingual",
+        "cnr_id": "comfyui_fl-cosyvoice3",
+        "ver": "f3e0f04aae70fd1c296240f481120412002233b0",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "input_ue_unconnectable": {}
+        }
+      },
+      "widgets_values": [
+        "О, черт! Привет. мне нужно с тобой поговорить. ха-ха.",
+        1,
+        "Please say a sentence in a very frightened voice.",
+        "auto",
+        1,
+        "fixed"
+      ],
+      "color": "#16727c",
+      "bgcolor": "#4F0074"
+    },
+    {
+      "id": 29,
+      "type": "PreviewAudio",
+      "pos": [
+        1272.2639649262278,
+        178.4881653245498
+      ],
+      "size": [
+        231.47316058839806,
+        97.77827883487362
+      ],
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "audio",
+          "type": "AUDIO",
+          "link": 112
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "PreviewAudio",
+        "cnr_id": "comfy-core",
+        "ver": "0.5.1",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "version": "7.2.2",
+          "input_ue_unconnectable": {}
+        }
+      },
+      "widgets_values": []
     }
   ],
   "links": [
@@ -717,14 +735,6 @@
       "AUDIO"
     ],
     [
-      115,
-      52,
-      0,
-      21,
-      0,
-      "AUDIO"
-    ],
-    [
       116,
       41,
       0,
@@ -755,6 +765,14 @@
       54,
       0,
       "AUDIO"
+    ],
+    [
+      127,
+      52,
+      0,
+      60,
+      0,
+      "AUDIO"
     ]
   ],
   "groups": [
@@ -775,17 +793,17 @@
   "config": {},
   "extra": {
     "ds": {
-      "scale": 0.5259436893148179,
+      "scale": 0.7000310504780275,
       "offset": [
-        988.684773406432,
-        951.9062558017544
+        87.70663026407817,
+        616.981307680149
       ]
     },
+    "frontendVersion": "1.35.9",
     "workflowRendererVersion": "LG",
-    "frontendVersion": "1.33.13",
     "ue_links": [],
     "VHS_latentpreview": true,
-    "VHS_latentpreviewrate": 0,
+    "VHS_latentpreviewrate": 3,
     "VHS_MetadataImage": true,
     "VHS_KeepIntermediate": true
   },
