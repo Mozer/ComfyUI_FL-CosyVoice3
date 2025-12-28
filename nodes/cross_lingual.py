@@ -56,6 +56,12 @@ class FL_CosyVoice3_CrossLingual:
                     "step": 0.1,
                     "description": "Speech speed multiplier"
                 }),
+                "emotion_instruct": ("STRING", {
+                    "default": "",
+                    "multiline": True,
+                    "placeholder": "Please say a sentence in a very frightened voice.",
+                    "description": "Emotion, accent, or style instruction. Leave empty for standard cloning."
+                }),
             },
             "optional": {
                 "target_language": (["auto", "zh", "en", "ja", "ko", "de", "es", "fr", "it", "ru"], {
@@ -78,6 +84,7 @@ class FL_CosyVoice3_CrossLingual:
         reference_audio: Dict[str, Any],
         speed: float = 1.0,
         target_language: str = "auto",
+        emotion_instruct: str = "",  # <-- NEW: Parameter for emotion/language/etc. instructions
         seed: int = -1
     ) -> Tuple[Dict[str, Any]]:
         """
@@ -149,7 +156,7 @@ class FL_CosyVoice3_CrossLingual:
             # Format text based on model version
             # CosyVoice3 cross-lingual requires system prompt in tts_text (per example.py:81-83)
             if is_v3:
-                formatted_text = f"You are a helpful assistant.<|endofprompt|>{text}"
+                formatted_text = f"You are a helpful assistant. {emotion_instruct}<|endofprompt|>{text}"
                 print(f"[FL CosyVoice3 CrossLingual] Using CosyVoice3 format with system prompt")
             else:
                 # CosyVoice v1 may need language tags for cross-lingual
@@ -172,6 +179,7 @@ class FL_CosyVoice3_CrossLingual:
             pbar.update_absolute(1, 3)
             print(f"[FL CosyVoice3 CrossLingual] Running cross-lingual inference...")
 
+            print(formatted_text)
             output = cosyvoice_model.inference_cross_lingual(
                 tts_text=formatted_text,
                 prompt_wav=temp_file,
